@@ -1,12 +1,13 @@
 use anyhow::{Context, Result};
 use std::io::{self, Write, BufRead};
-use rox::run;
+use rox::Rox;
 
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
+    let rox = Rox::new();
     match args.len() {
-        0 => run_prompt(),
-        1 => run_file(&args[0]),
+        0 => run_prompt(rox),
+        1 => run_file(rox, &args[0]),
         _ => {
             println!("Usage: rox [script]");
             std::process::exit(64)
@@ -14,7 +15,7 @@ fn main() -> Result<()> {
     }
 }
 
-fn run_prompt() -> Result<()> {
+fn run_prompt(mut rox: Rox) -> Result<()> {
     let stdin = io::stdin();
     let handle = stdin.lock();
 
@@ -23,12 +24,12 @@ fn run_prompt() -> Result<()> {
 
         io::stdout().flush().context("failed to flush stdout")?;
 
-        run(&line.context("failed to read line")?).context("failed to run line")?
+        rox.run(&line.context("failed to read line")?).context("failed to run line")?
     }
     Ok(())
 }
 
-fn run_file(path: &str) -> Result<()> {
+fn run_file(mut rox: Rox, path: &str) -> Result<()> {
     let file = std::fs::read_to_string(path).context(format!("failed to open {}", path))?;
-    run(&file).context(format!("failed to run {}", path))
+    rox.run(&file).context(format!("failed to run {}", path))
 }

@@ -1,23 +1,28 @@
-use anyhow::Result;
-use std::fmt::Display;
-use std::error::Error;
+mod object;
+mod scanner;
+mod token;
+mod util;
+mod error;
 
-#[derive(Debug)]
-pub enum ScanErr {
-    TokenErr(&'static str)
-}
+use scanner::Scanner;
+use error::{DisplayableVec, ParseError, RoxError};
 
-impl Display for ScanErr {
-    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        match self {
-            ScanErr::TokenErr(msg) => f.write_str(msg)
-        }
+
+pub struct Rox {}
+
+impl Rox {
+    pub fn new() -> Self {
+        Self {}
     }
-}
 
-impl Error for ScanErr {}
-
-pub fn run(source: &str) -> Result<(), ScanErr> {
-    println!("{}", source);
-    Ok(())
+    pub fn run(&mut self, source: &str) -> Result<(), RoxError> {
+        let mut scanner = Scanner::new(source);
+        let tokens = scanner
+            .scan()
+            .map_err(|e| ParseError::ScanError(DisplayableVec(e)))?;
+        for ref token in tokens {
+            println!("{}", token);
+        }
+        Ok(())
+    }
 }
