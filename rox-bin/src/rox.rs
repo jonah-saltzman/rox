@@ -1,6 +1,6 @@
 use anyhow::{Context, Result};
-use std::io::{self, Write, BufRead};
-use rox::Rox;
+use std::io::{self, Write};
+use rox_lib::Rox;
 
 fn main() -> Result<()> {
     let args: Vec<String> = std::env::args().skip(1).collect();
@@ -17,16 +17,24 @@ fn main() -> Result<()> {
 
 fn run_prompt(mut rox: Rox) -> Result<()> {
     let stdin = io::stdin();
-    let handle = stdin.lock();
 
-    for line in handle.lines() {
+    loop {
         print!("> ");
+        io::stdout().flush().context("Failed to flush stdout")?;
 
-        io::stdout().flush().context("failed to flush stdout")?;
+        let mut input = String::new();
+        stdin.read_line(&mut input).context("Failed to read line")?;
 
-        rox.run(&line.context("failed to read line")?).context("failed to run line")?
+        if input.trim().is_empty() {
+            continue;
+        }
+
+        match rox.run(&input) {
+            Err(e) => { println!("{}", e) },
+            _ => {}
+        }
     }
-    Ok(())
+
 }
 
 fn run_file(mut rox: Rox, path: &str) -> Result<()> {

@@ -72,12 +72,12 @@ impl Token {
 
 impl std::fmt::Display for Token {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{} {}", self.typ, self.lex)?;
+        write!(f, "{}", self.typ)?;
         
         if let Some(ref lit) = self.lit {
             write!(f, " {}", lit)?;
         }
         
-        write!(f, " {}", self.line)
+        write!(f, " (line {})", self.line)
     }
 }

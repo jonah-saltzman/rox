@@ -1,19 +1,6 @@
-[package]
-name = "rox"
-version = "0.1.0"
-edition = "2021"
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
-[lib]
-path = "src/lib/mod.rs" 
-
-[[bin]]
-name = "rox"
-path = "src/bin/rox.rs" 
-
-[dependencies]
-anyhow = "1.0.75"
-strum = "0.25.0"
-strum_macros = "0.25.2"
-thiserror = "1.0.49"
+[workspace]
+members = [
+    "rox-lib",
+    "rox-bin",
+]
+workspace.resolver = "2"

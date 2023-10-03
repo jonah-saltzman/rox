@@ -3,10 +3,10 @@ mod scanner;
 mod token;
 mod util;
 mod error;
+pub mod keyword;
 
 use scanner::Scanner;
 use error::{DisplayableVec, ParseError, RoxError};
-
 
 pub struct Rox {}
 

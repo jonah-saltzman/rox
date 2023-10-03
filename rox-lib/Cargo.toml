@@ -1,0 +1,19 @@
+[package]
+name = "rox-lib"
+version = "0.1.0"
+edition = "2021"
+# build = "build.rs"
+
+[dependencies]
+anyhow = "1.0.75"
+phf = { version = "0.11.2", features = ["macros"]}
+strum = "0.25.0"
+strum_macros = "0.25.2"
+thiserror = "1.0.49"
+
+[build-dependencies]
+strum = "0.25.0"
+strum_macros = "0.25.2"
+
+[lib]
+path = "src/mod.rs"

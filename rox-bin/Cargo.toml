@@ -1,0 +1,17 @@
+[package]
+name = "rox-bin"
+version = "0.1.0"
+edition = "2021"
+
+# Define the binary
+[[bin]]
+name = "rox"
+path = "src/rox.rs" # assuming main.rs as your binary entry point
+
+[dependencies]
+rox-lib = { path = "../rox-lib" } # Link to the library crate
+anyhow = "1.0.75"
+phf = { version = "0.11.2", features = ["macros"]}
+strum = "0.25.0"
+strum_macros = "0.25.2"
+thiserror = "1.0.49"

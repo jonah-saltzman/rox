@@ -4,6 +4,10 @@ use thiserror::Error;
 pub enum ScanErr {
     #[error("Scan error: {0}")]
     UnexpectedToken(String),
+    #[error("Scan error: {0}")]
+    ParseNumErr(String),
+    #[error("Scan error: {0}")]
+    UnexpectedEOF(String)
 }
 
 impl From<Vec<ScanErr>> for ParseError {
